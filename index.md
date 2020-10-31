@@ -1,37 +1,72 @@
-## Welcome to GitHub Pages
+# [Event hub](https://yfill.cn/event-hub) &middot; [![GitHub license][mit]][mit-url] [![NPM Package][npm]][npm-url] [![Build Size][build-size]][build-size-url]
 
-You can use the [editor on GitHub](https://github.com/Yfill/event-hub/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+An event hub.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Install
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+using npm:
+```sh
+npm install @yfill/event-hub --save
+```
+or using yarn:
+```sh
+yarn add @yfill/event-hub
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Usage
 
-### Jekyll Themes
+* Import resources.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Yfill/event-hub/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+  ```js
+  import EventHub from "@yfill/event-hub";
+  ```
 
-### Support or Contact
+  ```html
+  <script src="https://unpkg.com/@yfill/event-hub"></script>
+  ```
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+* Create an EventHub instance, and then use it to monitor, broadcast, cancel monitor, and destroy.
+
+  ```js
+	const eh = new EventHub();
+	const typeHandler0 = (...arg) => {
+		console.log('typeHandler0', ...arg);
+	}
+	const typeHandler1 = (...arg) => {
+		console.log('typeHandler1', ...arg);
+	}
+	const typeHandler2 = (...arg) => {
+		console.log('typeHandler2', ...arg);
+	}
+	eh.on('$type', typeHandler0)
+	  .on('$type', typeHandler1)
+	  .on('$type', typeHandler2);
+
+	console.log('===First broadcast===');
+	eh.emit('$type', 'First broadcast', 'data');
+
+	eh.off('$type');
+
+	console.log('===Second broadcast===');
+	eh.emit('$type', 'Second broadcast', 'data');
+
+	eh.on('$type', typeHandler1)
+	  .on('$type', typeHandler2);
+
+	console.log('===Third broadcast===');
+	eh.emit('$type', 'Third broadcast', 'data0', 'data1');
+
+	eh.off('$type', typeHandler1);
+
+	console.log('===Fourth broadcast===');
+	eh.emit('$type', 'Fourth broadcast', 'data0', 'data1', 'data2');
+
+	eh.destroy();
+  ```
+	
+[mit]:https://img.shields.io/badge/license-MIT-blue.svg
+[mit-url]:https://github.com/Yfill/event-hub/blob/main/LICENSE
+[npm]: https://img.shields.io/npm/v/@yfill/event-hub.svg
+[npm-url]: https://www.npmjs.com/package/@yfill/event-hub
+[build-size]: https://badgen.net/bundlephobia/minzip/@yfill/event-hub
+[build-size-url]: https://bundlephobia.com/result?p=@yfill/event-hub
