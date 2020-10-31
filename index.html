@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EventHub</title>
+  <style>
+    @import url(https://cdn.jsdelivr.net/gh/tonsky/FiraCode@1.206/distr/fira_code.css);
+
+    code {
+      border-radius: 6px;
+      font-family: 'Fira Code', monospace;
+      font-weight: 500;
+    }
+
+    .item {
+      line-height: 40px;
+      border-width: 1px;
+      border-style: solid;
+      transition: all 0.2s;
+      padding-left: 10px;
+      border-radius: 6px;
+      margin: 20px 0;
+      padding: 10px;
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js/styles/solarized-dark.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js/languages/javascript.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js/languages/shell.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/highlight.js/languages/css.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/es6-promise"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios"></script>
+  <script src="https://vendor.yfill.cn/statistics.js" async></script>
+  <script src="https://cdn.jsdelivr.net/npm/@yfill/theme" onload="Theme.run();"></script>
+  <script src="./dist/index.js"></script>
+  <script>
+    axios.get('./README.md').then(function (res) {
+      var data = res.data;
+      document.getElementById('content').innerHTML = marked(data);
+      Array.apply(null, document.querySelectorAll('pre code')).forEach(function (block) {
+        block.setAttribute('background-color-1', '');
+        hljs.highlightBlock(block);
+      });
+    }).catch(function (e) {
+      console.error(e.message);
+      document.getElementById('content').innerHTML = '加载失败';
+    });
+  </script>
+  <script>
+    var eh = new EventHub();
+    function createTypeHandler(mark) {
+      return function () {
+        console.log.apply(console, [mark].concat(Array.apply(null, arguments)));
+      }
+    }
+    var typeHandler0 = createTypeHandler('typeHandler0');
+    var typeHandler1 = createTypeHandler('typeHandler1');
+    var typeHandler2 = createTypeHandler('typeHandler2');
+
+    eh.on('$type', typeHandler0)
+      .on('$type', typeHandler1)
+      .on('$type', typeHandler2);
+
+    console.log('===First broadcast===');
+    eh.emit('$type', 'First broadcast', 'data');
+
+    eh.off('$type');
+
+    console.log('===Second broadcast===');
+    eh.emit('$type', 'Second broadcast', 'data');
+
+    eh.on('$type', typeHandler1)
+      .on('$type', typeHandler2);
+
+    console.log('===Third broadcast===');
+    eh.emit('$type', 'Third broadcast', 'data0', 'data1');
+
+    eh.off('$type', typeHandler1);
+
+    console.log('===Fourth broadcast===');
+    eh.emit('$type', 'Fourth broadcast', 'data0', 'data1', 'data2');
+
+    eh.destroy();
+  </script>
+</head>
+
+<body background-color-0 font-color-0>
+  <div id="content"></div>
+</body>
+
+</html>
