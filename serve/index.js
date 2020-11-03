@@ -1,4 +1,3 @@
-/* eslint-disable no-console,consistent-return,import/no-extraneous-dependencies  */
 const bs = require('browser-sync').create();
 const { exec } = require('child_process');
 
