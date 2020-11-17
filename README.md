@@ -1,4 +1,12 @@
-# [Event hub](https://yfill.cn/event-hub) &middot; [![GitHub license][mit]][mit-url] [![NPM Package][npm]][npm-url] [![Build Size][build-size]][build-size-url]
+# [Event hub](https://yfill.cn/event-hub)
+
+[![GitHub license][mit]][mit-url] 
+[![Code Style][code-style]][code-style-url] 
+[![NPM Package][npm]][npm-url] 
+[![Monthly Downloads][md]][md-url] 
+[![Build Size][build-size]][build-size-url] 
+[![Dependencies Status][dependencies-status]][dependencies-status-url]
+[![DevDependencies Status][dev-dependencies-status]][dev-dependencies-status-url]
 
 An event hub.
 
@@ -68,7 +76,15 @@ yarn add @yfill/event-hub
 
 [mit]: https://img.shields.io/badge/license-MIT-blue.svg
 [mit-url]: https://github.com/Yfill/event-hub/blob/main/LICENSE
+[code-style]: https://img.shields.io/badge/code_style-airbnb-brightgreen
+[code-style-url]: https://www.npmjs.com/package/eslint-config-airbnb
+[md]: https://badgen.net/npm/dm/@yfill/event-hub
+[md-url]: https://npmcharts.com/compare/@yfill/event-hub?minimal=true
 [npm]: https://img.shields.io/npm/v/@yfill/event-hub.svg
 [npm-url]: https://www.npmjs.com/package/@yfill/event-hub
 [build-size]: https://badgen.net/bundlephobia/minzip/@yfill/event-hub
 [build-size-url]: https://bundlephobia.com/result?p=@yfill/event-hub
+[dependencies-status]: https://david-dm.org/Yfill/event-hub/status.svg
+[dependencies-status-url]: https://david-dm.org/Yfill/event-hub
+[dev-dependencies-status]: https://david-dm.org/Yfill/event-hub/dev-status.svg
+[dev-dependencies-status-url]: https://david-dm.org/Yfill/event-hub?type=dev
