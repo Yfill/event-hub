@@ -31,13 +31,7 @@ export default {
     format: 'umd',
     file: isProduction ? 'dist/index.js' : 'node_modules/.event-hub/dist/index.js',
     sourcemap: !isProduction,
-    banner: `/*
-      @license
-      ${pkg.name} v${pkg.version}
-      ${new Date().toGMTString()}
-      ${pkg.homepage}
-      Released under the ${pkg.license} License.
-    */`,
+    banner: `/*! ${pkg.name} v${pkg.version} | ${new Date().toGMTString()} | ${pkg.homepage} */`,
   },
   plugins: [
     ...basePlugins,
