@@ -3,7 +3,7 @@ import { objectValues } from './utils/object';
 type Handler = (...arg: any[]) => void;
 
 interface HandlerMapItem {
-  [id: string]: Handler[]
+  [id: string]: [Handler[], Handler[]]
 }
 
 interface HandlerMap {
@@ -36,13 +36,14 @@ const setHandlerTypeId = (handler: Handler, type: string, handlerTypeId: string)
   (handler as (Handler & { [id: string]: string }))[`$event-type-${type}`] = handlerTypeId;
 };
 
-const onInner = (handlerMap: HandlerMap, type: string, handler: Handler): void => {
+const onInner = (handlerMap: HandlerMap, type: string, handler: Handler, once = false): void => {
   if (!type || !handler) return;
   const handlerMapItem: HandlerMapItem = handlerMap[type] || {};
   const handlerTypeId = getHandlerTypeId(handler, type) || createHandlerTypeId();
-  const handlerList = handlerMapItem[handlerTypeId] || [];
-  handlerList.push(handler);
-  handlerMapItem[handlerTypeId] = handlerList;
+  const handlerBox = handlerMapItem[handlerTypeId] || [[], []];
+  if (once) handlerBox[1].push(handler);
+  else handlerBox[0].push(handler);
+  handlerMapItem[handlerTypeId] = handlerBox;
   handlerMap[type] = handlerMapItem;
   setHandlerTypeId(handler, type, handlerTypeId);
 };
@@ -54,8 +55,11 @@ const offInner = (handlerMap: HandlerMap, type: string, handler?: Handler): void
 
 const emitInner = (handlerMap: HandlerMap, type: string, ...arg: any[]): void => {
   objectValues(handlerMap[type] || {})
-    .forEach((handlerList: Handler[]) => handlerList
-      .forEach((handler: Handler) => handler(...arg)));
+    .forEach((handlerBox: [Handler[], Handler[]]) => {
+      [...handlerBox[0], ...handlerBox[1]]
+        .forEach((handler: Handler) => handler(...arg));
+      handlerBox[1] = [];
+    });
 };
 
 const preDetection = (
@@ -65,18 +69,14 @@ const preDetection = (
   if (status === EventHubStatus.Activated) task();
 };
 
-const on = (type: string, handler: Handler) => onInner(rootHandlerMap, type, handler);
-
-const off = (type: string, handler?: Handler) => offInner(rootHandlerMap, type, handler);
-
-const emit = (type: string, ...arg: any[]) => emitInner(rootHandlerMap, type, ...arg);
-
 export default class EventHub {
-  static on: Function = on
+  static on = (type: string, handler: Handler) => onInner(rootHandlerMap, type, handler)
 
-  static off: Function = off
+  static once = (type: string, handler: Handler) => onInner(rootHandlerMap, type, handler, true)
 
-  static emit: Function = emit
+  static off = (type: string, handler?: Handler) => offInner(rootHandlerMap, type, handler)
+
+  static emit = (type: string, ...arg: any[]) => emitInner(rootHandlerMap, type, ...arg)
 
   static create(): EventHub {
     return new EventHub();
@@ -95,6 +95,11 @@ export default class EventHub {
 
   on(type: string, handler: Handler): EventHub {
     preDetection(this.status, () => onInner(eventHubMap[this.id], type, handler));
+    return this;
+  }
+
+  once(type: string, handler: Handler): EventHub {
+    preDetection(this.status, () => onInner(eventHubMap[this.id], type, handler, true));
     return this;
   }
 
