@@ -40,6 +40,7 @@ yarn add @yfill/event-hub
 
   ```js
   const eh = new EventHub();
+
   const typeHandler0 = (...arg) => {
     console.log("typeHandler0", ...arg);
   };
@@ -49,19 +50,27 @@ yarn add @yfill/event-hub
   const typeHandler2 = (...arg) => {
     console.log("typeHandler2", ...arg);
   };
+  const typeHandler3 = (...arg) => {
+    console.log("typeHandler3", ...arg);
+  };
+
   eh.on("$type", typeHandler0)
     .on("$type", typeHandler1)
-    .on("$type", typeHandler2);
+    .on("$type", typeHandler2)
+    .once("$typeOnce", typeHandler3);
 
   console.log("===First broadcast===");
-  eh.emit("$type", "First broadcast", "data");
+  eh.emit("$type", "First broadcast", "data")
+    .emit("$typeOnce", "First broadcast", "data");
 
   eh.off("$type");
 
   console.log("===Second broadcast===");
-  eh.emit("$type", "Second broadcast", "data");
+  eh.emit("$type", "Second broadcast", "data")
+    .emit("$typeOnce", "Second broadcast", "data");
 
-  eh.on("$type", typeHandler1).on("$type", typeHandler2);
+  eh.on("$type", typeHandler1)
+    .on("$type", typeHandler2);
 
   console.log("===Third broadcast===");
   eh.emit("$type", "Third broadcast", "data0", "data1");
