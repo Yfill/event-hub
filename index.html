@@ -26,24 +26,28 @@
     var typeHandler0 = createTypeHandler('typeHandler0');
     var typeHandler1 = createTypeHandler('typeHandler1');
     var typeHandler2 = createTypeHandler('typeHandler2');
+    var typeHandler3 = createTypeHandler('typeHandler3');
 
     eh.on('$type', typeHandler0)
       .on('$type', typeHandler1)
-      .on('$type', typeHandler2);
+      .on('$type', typeHandler2)
+      .once('$typeOnce', typeHandler3);
 
     console.log('===First broadcast===');
-    eh.emit('$type', 'First broadcast', 'data');
+    eh.emit('$type', 'First broadcast', 'data')
+      .emit('$typeOnce', 'First broadcast', 'data');
 
     eh.off('$type');
 
     console.log('===Second broadcast===');
-    eh.emit('$type', 'Second broadcast', 'data');
+    eh.emit('$type', 'Second broadcast', 'data')
+      .emit('$typeOnce', 'Second broadcast', 'data');
 
     eh.on('$type', typeHandler1)
       .on('$type', typeHandler2);
 
     console.log('===Third broadcast===');
-    eh.emit('$type', 'Third broadcast', 'data0', 'data1');
+    eh.emit('$type', 'Third broadcast', 'data0', 'data1')
 
     eh.off('$type', typeHandler1);
 
@@ -57,7 +61,7 @@
 <body
   background-color-0
   font-color-0
->
+>   
   <script src="https://yfill.cn/docs/common/js/body.js"></script>
 </body>
 
