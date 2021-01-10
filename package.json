@@ -1,6 +1,6 @@
 {
   "name": "@yfill/event-hub",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "An event hub",
   "author": "Yfill <vps998@gmail.com>",
   "homepage": "https://yfill.cn/event-hub",
@@ -20,6 +20,12 @@
     "url": "https://github.com/Yfill/event-hub"
   },
   "main": "dist/index.js",
+  "module": "dist/index.esm.js",
+  "exports": {
+    "require": "./dist/index.cjs.js",
+    "import": "./dist/index.esm.js",
+    "browser": "./dist/index.js"
+  },
   "typings": "types/index.d.ts",
   "files": [
     "dist/*.js",
