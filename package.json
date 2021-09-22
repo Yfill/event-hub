@@ -54,7 +54,7 @@
     "@typescript-eslint/eslint-plugin": "4.31.2",
     "@typescript-eslint/parser": "4.31.2",
     "browser-sync": "2.27.5",
-    "browserslist": "4.17.0",
+    "browserslist": "4.17.1",
     "eslint": "7.32.0",
     "eslint-config-airbnb-base": "14.2.1",
     "eslint-plugin-import": "2.24.2",
