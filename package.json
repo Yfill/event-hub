@@ -44,9 +44,9 @@
     "firefox 52"
   ],
   "devDependencies": {
-    "@babel/cli": "7.23.9",
-    "@babel/core": "7.24.0",
-    "@babel/preset-env": "7.24.0",
+    "@babel/cli": "7.24.7",
+    "@babel/core": "7.24.7",
+    "@babel/preset-env": "7.24.7",
     "@rollup/plugin-babel": "6.0.4",
     "@rollup/plugin-commonjs": "24.1.0",
     "@rollup/plugin-node-resolve": "15.2.3",
