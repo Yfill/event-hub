@@ -48,7 +48,7 @@
     "@babel/core": "7.25.2",
     "@babel/preset-env": "7.25.4",
     "@rollup/plugin-babel": "6.0.4",
-    "@rollup/plugin-commonjs": "24.1.0",
+    "@rollup/plugin-commonjs": "28.0.1",
     "@rollup/plugin-node-resolve": "15.3.0",
     "@rollup/plugin-typescript": "11.1.6",
     "@typescript-eslint/eslint-plugin": "5.62.0",
